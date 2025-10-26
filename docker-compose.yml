@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  clewdr:
+    image: ghcr.io/xerxes-2/clewdr:latest
+    container_name: clewdr
+    environment:
+      CLEWDR_IP: 0.0.0.0
+      CLEWDR_PORT: 8484
+      CLEWDR_NO_FS: "false"
+      CLEWDR_CHECK_UPDATE: "false"
+      CLEWDR_AUTO_UPDATE: "false"
+      CLEWDR_PASSWORD: ${CLEWDR_PASSWORD:-changeme-api}
+      CLEWDR_ADMIN_PASSWORD: ${CLEWDR_ADMIN_PASSWORD:-changeme-admin}
+      # Optional: upstream HTTP/SOCKS proxy
+      CLEWDR_PROXY: ${CLEWDR_PROXY:-}
+      # Optional: pre-seed Claude cookies (JSON array-of-arrays)
+      # Example: [["sk-ant-sid01-..."],["sk-ant-sid01-..."]]
+      CLEWDR_COOKIE_ARRAY: ${CLEWDR_COOKIE_ARRAY:-}
+      # Optional: reverse proxy base URL (e.g., https://your.domain)
+      CLEWDR_RPROXY: ${CLEWDR_RPROXY:-}
+    volumes:
+      - ./data:/etc/clewdr
+    ports:
+      - "8484:8484"
+    restart: unless-stopped
